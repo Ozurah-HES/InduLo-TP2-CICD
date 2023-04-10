@@ -1,8 +1,8 @@
 # import depuis les sources
-# from src.wallet import Wallet
+from src.wallet import Wallet
 
 # import depuis le .whl TP2
-from TP2.wallet import Wallet
+# from TP2.wallet import Wallet
 
 if __name__ == "__main__":
     my_wallet = Wallet(100)
