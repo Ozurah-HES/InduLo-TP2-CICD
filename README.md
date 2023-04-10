@@ -177,7 +177,7 @@ Cela permet de savoir si le projet est conforme aux standards de qualité et pr�
     - A mettre ici : https://github.com/Ozurah-HES/InduLo-TP2-CICD/settings/secrets/actions. On a maintenant 2 secrets :
     ![](Screen/2023-04-10-15-05-11.png)
 - Pour la partie **"Create or update a build file"** du tutoriel
-  - La partie `build.yml` n'est pas à suivre pour le TP. A la place on modifie notre fichier de `build` existant (modifications visible sur ce [commit](§§§§§§TODO§§§§§§§))
+  - La partie `build.yml` n'est pas à suivre pour le TP. A la place on modifie notre fichier de `build` existant (modifications visible sur ce [commit](https://github.com/Ozurah-HES/InduLo-TP2-CICD/commit/6915b268eda60f374b92f90a1558231b68e86d15))
   - Il faut par contre reprendre le fichier `sonar-project.properties` qui est généré et le mettre à la racine du projet.
 
 Il faut encore configurer le `sonar-project.properties` pour utiliser le "coverage" de `pytest` (défini dans le `build.yml`)
@@ -189,6 +189,35 @@ sonar.coverage.exclusions= **/tests/**,**/controller/**,setup.py,test_wheel.py
 
 Il ne reste qu'à push !
 
+On peut voir que le coverage est maintenant affiché sur SonarCloud :
+![](Screen/2023-04-10-15-40-59.png)
 
+Et dans le `summary` (de la branche main) :
+![](Screen/2023-04-10-15-46-30.png)
+![](Screen/2023-04-10-15-48-22.png)
+
+
+### _Question 1 -_ Quelle est la différence entre les sections New code et Overall Code dans l’onglet Summary ?
+
+`New code` est le code qui a été ajouté depuis la dernière analyse.
+
+`Overall Code` est le code total du projet.
+
+### _Question 2 -_ Y a-t-il des Code Smells ? Si oui, combien et pour quelle(s) raisons(s) ?
+
+On peut voir qu'il y a 3 "code smells" (maintenabilité).
+
+En regardant en détail, on a :
+![](Screen/2023-04-10-15-52-52.png)
+
+- 2x des paramètres de fonctions qui ne sont pas utilisés
+- 1x du code en double (les méthodes `spend_money` et `spend_cash` ont le même code)
+
+### _Question 3 -_ Y a-t-il des Security Hotspots ? Si oui, combien et pour quelle(s) raison(s) ?
+
+On peut voir qu'il y a 1 "security hotspot".
+
+En regardant en détail, on peut voir que l'erreur est dûe à l'utilisation de "root" pour l'image python.
+![](Screen/2023-04-10-15-50-11.png)
 
 
