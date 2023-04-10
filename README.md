@@ -220,4 +220,25 @@ On peut voir qu'il y a 1 "security hotspot".
 En regardant en détail, on peut voir que l'erreur est dûe à l'utilisation de "root" pour l'image python.
 ![](Screen/2023-04-10-15-50-11.png)
 
+## C - Correction des erreurs
 
+La correction des erreurs "code smells" ont été faites sur ce [commit](https://github.com/Ozurah-HES/InduLo-TP2-CICD/commit/d25d76d142401ca9a4e1e380afae9e092168d5ac).
+
+Concernant la "security hotspot", j'ai abandonné après plusieurs essaies sans succès.
+
+![](Screen/2023-04-10-16-44-46.png)
+
+Les échecs sont dûs aux tentatives d'ajouter un utilisateur non-root dans l'image docker. J'ai essayé plusieurs méthodes pour ajouter un utilisateur, mais même l'ajout d'un utilisateur "simplement" n'a pas fonctionné :
+
+```Dockerfile
+# Dockerfile
+RUN adduser nonroot
+
+USER nonroot
+```
+Ce qui lève plusieurs erreurs dans le [CI (lien vers les logs)](https://github.com/Ozurah-HES/InduLo-TP2-CICD/actions/runs/4658352210/jobs/8243925037).
+
+Du coup j'ai retirer l'étape "création d'un utilisateur" pour vérifier que les corrections des erreurs "code smells" fonctionnent. Comme le montre le dernier CI/CD, c'est passé.
+
+Et sur SonarCloud, on peut voir qu'il n'y a plus de `Code Smells` (mais qu'il y a toujours le `Security Hotspot`) :
+![](Screen/2023-04-10-16-48-58.png)
