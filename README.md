@@ -1,7 +1,12 @@
 # InduLo-TP2-CICD
 TP2 du cours d'industrialisation logiciel (CI / CD)
 
-Adresse du répos du TP : https://github.com/Ozurah-HES/InduLo-TP2-CICD
+Adresse du répos GitHub du TP : https://github.com/Ozurah-HES/InduLo-TP2-CICD
+Adresse du répos GitLab du TP : gitlab-etu.ing.he-arc.ch/jonas.allemann/indulo-tp2-cicd_gitlab
+
+Note : 
+- GitLab est utilisé pour l'exercice 3.
+- **Les réponses aux questions & readme ne sont maintenu que sur GitHub.** Même ceux de l'exercice 3.
 
 --------------------
 --------------------
@@ -242,3 +247,42 @@ Du coup j'ai retirer l'étape "création d'un utilisateur" pour vérifier que le
 
 Et sur SonarCloud, on peut voir qu'il n'y a plus de `Code Smells` (mais qu'il y a toujours le `Security Hotspot`) :
 ![](Screen/2023-04-10-16-48-58.png)
+
+# Exercice 3 - GitLab
+
+## A - Fonctionnement du CI/CD sur GitLab
+
+### _Question 1 -_ Que fait le job pytest ?
+
+Il créé un environnement virtuel, installe les dépendances puis lance les tests avec `pytest`.
+
+### _Question 2 -_ Que fait le job image-creation ?
+
+Il créer une image docker avec Kaniko.
+
+### _Question 3 -_ Que fait le job package-creation ?
+
+Installe Twine (permettant d'enregistrer des Package Python à `PyPI` (`Python Package Index`) par exemple) et crée un wheel Python.
+
+
+### _Question 4 -_ Les jobs s’exécutent-ils dans le même ordre que défini dans le fichier ? Sinon, pourquoi ?
+> Indice: Demandez-vous comment on définit l’ordre d’exécution des jobs en Gitlab CI/CD.
+
+Dans le fichier l'ordre "visuel" est "pytest -> image-creation -> package-creation".
+![](Screen/2023-04-10-17-46-13.png)
+
+Par contre, les jobs sont executés en parallèle en fonction de leur "stage". Il est possible de créer des dépendances (instruction `needs`) entre les jobs pour spécifier l'ordre.
+
+Ici nous avons 2 stages : `build` et `test`.
+
+### _Question 5 -_ Le stage 2 génère une image Docker. Où est-elle stockée et comment pouvez-vous la retrouver ?
+
+Elle est stockés dans le projet GitLab. On la retrouve dans l'onglet `"Packages and registries" > "Container Registry"` (https://gitlab-etu.ing.he-arc.ch/jonas.allemann/indulo-tp2-cicd_gitlab/container_registry/)
+
+![](Screen/2023-04-10-17-56-46.png)
+
+### _Question 6 -_ Le stage 3 génère un wheel Python. Où est-il stocké et comment pouvez-vous le retrouver ?
+
+Elle est stockés dans le projet GitLab. On la retrouve dans l'onglet `"Packages and registries" > "Package Registry"` (https://gitlab-etu.ing.he-arc.ch/jonas.allemann/indulo-tp2-cicd_gitlab/-/packages)
+
+![](Screen/2023-04-10-17-57-56.png)
