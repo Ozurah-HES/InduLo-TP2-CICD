@@ -286,3 +286,52 @@ Elle est stockés dans le projet GitLab. On la retrouve dans l'onglet `"Packages
 Elle est stockés dans le projet GitLab. On la retrouve dans l'onglet `"Packages and registries" > "Package Registry"` (https://gitlab-etu.ing.he-arc.ch/jonas.allemann/indulo-tp2-cicd_gitlab/-/packages)
 
 ![](Screen/2023-04-10-17-57-56.png)
+
+## B - Utiliser le wheel Python
+
+![](Screen/2023-04-10-18-03-31.png)
+
+Il faut d'abord créer un `token d'accès` pour pouvoir installer le package depuis le `Package Registry` :
+
+- Tutoriel https://gitlab-etu.ing.he-arc.ch/help/user/profile/personal_access_tokens
+  - https://gitlab-etu.ing.he-arc.ch/-/profile/personal_access_tokens
+    ![](Screen/2023-04-10-18-06-54.png)
+
+Dans le projet on installe le package avec la commande suivante :
+```bash
+# Remplacer <your_personal_token> par le token d'accès
+pip install TP2 --index-url https://__token__:<your_personal_token>@gitlab-etu.ing.he-arc.ch/api/v4/projects/2475/packages/pypi/simple
+```
+
+Et pour vérifier que le package fonctionne bien :
+Dans le fichier `test_wheel.py` (à la racine du projet), changer comme suit :
+
+**avant** :
+```python
+# import depuis les sources
+from src.wallet import Wallet
+
+# import depuis le .whl TP2
+# from TP2.wallet import Wallet
+```
+**après** :
+```python
+# import depuis les sources
+# from src.wallet import Wallet
+
+# import depuis le .whl TP2
+from TP2.wallet import Wallet
+```
+
+Et lancer le programme :
+```bash
+python .\test_wheel.py
+# Output : Congratulations. You successfully installed the TP2 package !
+```
+
+=> ça fonctionne !
+
+----
+----
+
+**Fin du TP2**
