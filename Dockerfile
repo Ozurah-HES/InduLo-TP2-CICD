@@ -1,8 +1,7 @@
 FROM python:3.9
 
 # Create a non root user to run the app
-RUN addgroup --system nonroot \
-    && adduser --system nonroot --group nonroot
+RUN adduser -D nonroot
 
 USER nonroot
 
