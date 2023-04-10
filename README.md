@@ -35,7 +35,7 @@ Les fichiers `pipfile` (généré avec `pipenv`) sont à push sur le repo git, m
 
 ## B - Setup Github Action
 
-### Quels étapes sont réalisées par le `yml` Python par défaut ?
+### _Question 1 -_ Quels étapes sont réalisées par le `yml` Python par défaut ?
 
 Les étapes sont les "puces" dans la partie `steps`
 1. **Checkout** : récupère le code source du projet
@@ -44,12 +44,12 @@ Les étapes sont les "puces" dans la partie `steps`
 4. **Lint with flake8** : linter pour vérifier la qualité du code
 5. **Test with pytest** : execute les tests unitaires (CF TP1)
 
-### Une étape est définie au minimum par 2 éléments, lesquels sont-ils et à quoi servent-ils ?
+### _Question 2 -_ Une étape est définie au minimum par 2 éléments, lesquels sont-ils et à quoi servent-ils ?
 
 - `name` : nom de l'étape
 - `run` : commande(s) à exécuter
 
-### La première étape contient le mot-clé ‘with’, a quoi sert-il ?
+### _Question 3 -_La première étape contient le mot-clé ‘with’, a quoi sert-il ?
 
 Permet de transmettre des paramètres à l'étape.
 
@@ -148,3 +148,47 @@ Pour lancer notre premier scan, il faut appuyer sur `Set New Code Definition` du
 Modifons le code du TP et pushons le sur GitHub.
 
 Le fait de push va déclancher automatiquement le scan de SonarCloud.
+
+![](Screen/2023-04-10-14-41-40.png)
+
+### _Question 1 -_ Sur l’onglet Summary d’une analyse de code, SonarCloud fournit 4 indicateurs. Quels sont-ils et quelles sont leurs utilités ?
+
+| Indicateurs | Utilité |
+| ----------- | ------- |
+| Bugs | Nombre de bugs qui ont été détectés dans notre code |
+| Code Smells | Nombre de mauvaises pratiques |
+| Vulnerabilities | Nombre de vulnérabilités (failles de sécurité) |
+| Security Hotspots | Nombre de risque de volnérabilité |
+
+### _Question 2 -_ À quoi sert l’indicateur Quality Gate ?
+
+Il s'agit d'un ensemble de conditions booléennes.
+
+Cela permet de savoir si le projet est conforme aux standards de qualité et prêt à être déployé au public.
+
+## B - Ajout de l'analyse de couverture de code
+
+- Sur SonarCloud : https://sonarcloud.io/project/analysis_method?id=Ozurah-HES_InduLo-TP2-CICD
+  - Décocher `Automatic Analysis` ![](Screen/2023-04-10-14-57-34.png)
+- Suivre le "tutoriel GitHub Actions"
+  ![](Screen/2023-04-10-15-01-59.png)
+  Il faut ajouter 1 "secret" au projet :
+    - `SONAR_TOKEN` : valeur générée par SonarCloud sur le tutoriel
+    - A mettre ici : https://github.com/Ozurah-HES/InduLo-TP2-CICD/settings/secrets/actions. On a maintenant 2 secrets :
+    ![](Screen/2023-04-10-15-05-11.png)
+- Pour la partie **"Create or update a build file"** du tutoriel
+  - La partie `build.yml` n'est pas à suivre pour le TP. A la place on modifie notre fichier de `build` existant (modifications visible sur ce [commit](§§§§§§TODO§§§§§§§))
+  - Il faut par contre reprendre le fichier `sonar-project.properties` qui est généré et le mettre à la racine du projet.
+
+Il faut encore configurer le `sonar-project.properties` pour utiliser le "coverage" de `pytest` (défini dans le `build.yml`)
+
+```properties
+sonar.python.coverage.reportPaths= coverage.xml
+sonar.coverage.exclusions= **/tests/**,**/controller/**,setup.py,test_wheel.py
+```
+
+Il ne reste qu'à push !
+
+
+
+
